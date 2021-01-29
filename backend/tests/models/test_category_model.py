@@ -32,3 +32,8 @@ class TestCategory:
     def test_category_description_not_value(self, description):
         with pytest.raises(ValueError):
             category = Category(self.name, description)
+
+    @pytest.mark.parametrize("description", [None, True, 123, 123.4])
+    def test_category_description_not_type(self, description):
+        with pytest.raises(TypeError):
+            category = Category('name', description)
