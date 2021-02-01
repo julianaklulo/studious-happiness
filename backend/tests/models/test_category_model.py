@@ -1,30 +1,39 @@
+import sys
+
+sys.path.append('.')
 from backend.models.category import Category
+import pytest
 
 
 class TestCategory:
     name = "Category"
     description = "A very nice category"
 
-    def test_create_instance(self):
-        self.category = Category(self.name, self.description)
-        assert isinstance(self.category, Category)
-        assert self.category.name == self.name
-        assert self.category.description == self.description
+    @pytest.mark.parametrize("name, description",
+                                [('N', ''), ('N'*100, 'D'*255)]
+                            )
+    def test_create_instance(self, name, description):
+        category = Category(name, description)
+        assert isinstance(category, Category)
 
-    def test_invalid_name(self):
-        invalid_names = ['', 123, 'a' * 1000]
-        for value in invalid_names:
-            self.name = value
-            try:
-                self.category = Category(self.name, self.description)
-            except Exception as e:
-                assert isinstance(e, ValueError)
+    @pytest.mark.parametrize("name", ['', ' ', 'N' * 101])
+    def test_category_name_not_value(self, name):
+        with pytest.raises(ValueError):
+            category = Category(name, self.description)
 
-    def test_invalid_description(self):
-        invalid_descriptions = ['', 123, 'a' * 1000]
-        for value in invalid_descriptions:
-            self.description = value
-            try:
-                self.category = Category(self.name, self.description)
-            except Exception as e:
-                assert isinstance(e, ValueError)
+
+    @pytest.mark.parametrize("name", [None, True, 123, 123.4])
+    def test_category_name_not_type(self, name):
+        with pytest.raises(TypeError):
+            category = Category(name, self.description)
+
+
+    @pytest.mark.parametrize("description", ['N'*256])
+    def test_category_description_not_value(self, description):
+        with pytest.raises(ValueError):
+            category = Category(self.name, description)
+
+    @pytest.mark.parametrize("description", [None, True, 123, 123.4])
+    def test_category_description_not_type(self, description):
+        with pytest.raises(TypeError):
+            category = Category('name', description)

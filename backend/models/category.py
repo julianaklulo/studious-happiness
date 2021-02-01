@@ -14,10 +14,8 @@ class Category(BaseModel):
 
     @validates('name')
     def validate_name(self, key, name):
-        if not name:
-            raise ValueError("Name is required")
         if not isinstance(name, str):
-            raise ValueError("Name must be a string")
+            raise TypeError("Name must be a string")
         if not name.strip():
             raise ValueError("Name can't be empty")
         if len(name) > 100:
@@ -26,12 +24,8 @@ class Category(BaseModel):
 
     @validates('description')
     def validate_description(self, key, description):
-        if not description:
-            raise ValueError("Description is required")
         if not isinstance(description, str):
-            raise ValueError("Description must be a string")
-        if not description.strip():
-            raise ValueError("Description can't be empty")
-        if len(description) > 250:
+            raise TypeError("Description must be a string")
+        if len(description) > 255:
             raise ValueError("Description can't be more than 250 characters")
         return description
