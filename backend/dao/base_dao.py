@@ -9,10 +9,12 @@ class BaseDao:
         with Session() as session:
             session.add(model)
             session.commit()
+            session.refresh(model)
+            return model
 
-    def read_by_id(self, id_:int) -> BaseModel:
+    def read_by_id(self, id:int) -> BaseModel:
         with Session() as session:
-            result = session.query(self.__type_model).filter_by(id_=id_).first()
+            result = session.query(self.__type_model).filter_by(id=id).first()
         return result
 
     def read_all(self) -> list:
@@ -20,9 +22,9 @@ class BaseDao:
             result = session.query(self.__type_model).order_by('id').all()
         return result
 
-    def delete(self, model: BaseModel) -> BaseModel:
+    def delete(self, model: BaseModel) -> None:
         with Session() as session:
-            session.delete()
+            session.delete(model)
             session.commit()
 
 
