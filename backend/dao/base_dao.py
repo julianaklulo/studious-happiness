@@ -1,6 +1,7 @@
 from backend.models.base_model import BaseModel
 from backend.dao.session import Session
 
+
 class BaseDao:
     def __init__(self, type_model):
         self.__type_model = type_model
@@ -12,7 +13,7 @@ class BaseDao:
             session.refresh(model)
             return model
 
-    def read_by_id(self, id:int) -> BaseModel:
+    def read_by_id(self, id: int) -> BaseModel:
         with Session() as session:
             result = session.query(self.__type_model).filter_by(id=id).first()
         return result
@@ -26,5 +27,3 @@ class BaseDao:
         with Session() as session:
             session.delete(model)
             session.commit()
-
-
