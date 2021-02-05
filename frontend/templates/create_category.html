@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block body %}
+<br/>
+<form action="/categories" method="POST">
+    <div class="container d-grid gap-3">
+        <div class="col-auto">
+            <label for="name" class="form-label">Nome</label>
+            <input type="text" class="form-control" name="name" required>
+        </div>
+        <div class="col-auto">
+            <label for="description" class="form-label">Descrição</label>
+            <input type="text" class="form-control" name="description" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+  </form>
+{% endblock %}
