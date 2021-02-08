@@ -24,9 +24,8 @@ class BaseResource(Resource):
 
     def put(self, id):
         data = request.json
-
-        if data['id'] == id:
-            item = self.__dao.read_by_id(id)
+        item = self.__dao.read_by_id(id)
+        if item is not None:
             for key, value in data.items():
                 setattr(item, key, value)
             return self.__dao.save(item)
@@ -34,5 +33,7 @@ class BaseResource(Resource):
 
     def delete(self, id):
         item = self.__dao.read_by_id(id)
-        self.__dao.delete(item)
-        return None, 204
+        if item is not None:
+            self.__dao.delete(item)
+            return None, 204
+        return None, 404
